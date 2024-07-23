@@ -1,53 +1,65 @@
 import { useEffect, useState } from 'react';
 import Navbar from './Navbar';
+import Card from './Card';
+import './Home.css';
+
 const Home = () => {
-  const [userData, setUserData] = useState(null);
+  // State to store user data
+  // const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetch('https://dummyjson.com/auth/me', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      })
-        .then(res => {
-          if (!res.ok) {
-            throw new Error('Failed to fetch user data');
-          }
-          return res.json();
-        })
-        .then(data => {
-          setUserData(data); // Store user data in state
-        })
-        .catch(error => {
-          console.error('Error fetching user data:', error);
-          // Handle error (e.g., show error message to user)
-        });
-    }
-  }, []);
+  // useEffect to fetch user data on component mount
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     fetch('https://0de4-157-39-34-236.ngrok-free.app/api/v1/admin/all-reimbursement', {
+  //       method: 'GET',
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`,
+  //       },
+  //     })
+  //       .then(res => {
+  //         if (!res.ok) {
+  //           throw new Error('Failed to fetch user data');
+  //         }
+  //         return res.json();
+  //       })
+  //       .then(data => {
+  //         setUserData(data); // Store user data in state
+  //         console.log(JSON.stringify(data));
+  //       })
+  //       .catch(error => {
+  //         console.error('Error fetching user data:', error);
+  //         // Handle error (e.g., show error message to user)
+  //       });
+  //   }
+  // }, []);
 
-  if (!userData) {
-    return <p>Loading...</p>; // Placeholder for when data is being fetched
-  }
+  // Conditional rendering: Show loader if userData is not yet fetched
+  // if (!userData) {
+  //   return <> <Navbar/> <div className="loader"></div>  </> // Placeholder for when data is being fetched
+  // }
 
+  // Always ensure the functional component returns JSX
+  // This part renders the main content of the Home component
   return (
     <>
-    <Navbar/>
-      <div className="cards flex flex-wrap gap-5 text-black">
-        <div className='card h-auto md:w-[400px] w-[600px] my-3 mx-3 bg-violet-100  rounded-xl'>
-          <img className='rounded-3xl p-3' width={400} src={userData.image} alt="" />
-          <div className='p-2'>
-            <h1 className='text-3xl font-bold'>{userData.username} </h1>
-            <p className='text-2xl'>{userData.university}</p>
-            <p className='py-4'>{userData.userAgent}</p>
-          </div>
-        </div>
-
+      {/* Render Navbar component */}
+      <Navbar />
+      {/* Render cards with different statuses */}
+      <div className="md:flex md:flex-wrap">
+        <Card className='cursor-pointer hover:bg-[#8064A2] hover:text-white' heading="Pending Task" />
+        <Card className='cursor-pointer hover:bg-[#77933C] hover:text-white' heading="Approval Task" />
+        <Card className='cursor-pointer hover:bg-[#C0504D] hover:text-white' heading="Decline Task" />
+        <Card 
+          className='cursor-pointer hover:bg-[#0096C8] hover:text-white' 
+          heading='Read More'
+          subHeading='Click View More'
+          iconSrc="https://cdn.lordicon.com/vduvxizq.json"
+          isReadMore
+        />
       </div>
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;
